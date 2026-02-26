@@ -1,4 +1,4 @@
-export const tshirts = [
+const tshirts = [
   {
     title: 'Blue T-Shirt',
     image: 'blue-t-shirt.jpg',

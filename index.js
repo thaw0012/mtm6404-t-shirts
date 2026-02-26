@@ -1,7 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './app';
-
+//this part tells the React code to appear on site
 ReactDOM.render(
     <React.StrictMode>
         <App />
