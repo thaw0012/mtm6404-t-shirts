@@ -1,67 +1,70 @@
 import React, {useState} from 'react';
 
-const tshirts = [
-  {
-    title: 'Blue T-Shirt',
-    image: 'blue-t-shirt.jpg',
-    price: 7.99,
-    stock: 4,
-    quantity: 1
-  },
-  {
-    title: 'Bright Purple T-Shirt',
-    image: 'bright-purple-t-shirt.jpg',
-    price: 5.99,
-    stock: 1,
-    quantity: 1
-  },
-  {
-    title: 'Cobalt Blue T-Shirt',
-    image: 'cobalt-blue-t-shirt.jpg',
-    price: 9.99,
-    stock: 5,
-    quantity: 1
-  },
-  {
-    title: 'Green T-Shirt',
-    image: 'green-t-shirt.jpg',
-    price: 6.99,
-    stock: 0,
-    quantity: 1
-  },
-  {
-    title: 'Grey T-Shirt',
-    image: 'blue-t-shirt.jpg',
-    price: 4.99,
-    stock: 2,
-    quantity: 1
-  },
-  {
-    title: 'Light Green T-Shirt',
-    image: 'light-green-t-shirt.jpg',
-    price: 7.99,
-    stock: 4,
-    quantity: 1
-  },
-  {
-    title: 'Purple T-Shirt',
-    image: 'purple-t-shirt.jpg',
-    price: 7.99,
-    stock: 0,
-    quantity: 1
-  },
-  {
-    title: 'Red T-Shirt',
-    image: 'red-t-shirt.jpg',
-    price: 6.99,
-    stock: 3,
-    quantity: 1
-  },
-  {
-    title: 'Teal T-Shirt',
-    image: 'teal-t-shirt.jpg',
-    price: 7.99,
-    stock: 2,
-    quantity: 1
-  }
-]
+import { tshirts as initialData} from './t-shirts';
+
+const App = () => {
+    const [inventory, setInventory] = useState(initialData);
+
+const handleBuy = (title, buyQty) => {
+        const updatedInventory = inventory.map((shirt) => {
+            return shirt.title === title
+                ? { ...shirt, stock: shirt.stock - buyQty }
+                : shirt;
+        });
+        setInventory(updatedInventory);
+    };
+
+    return (
+        <div className="container mt-5">
+            <h1 className="text-center mb-4">T-Shirts Store</h1>
+            <div className="row">
+                {inventory.map((shirt, index) => (
+                    <Shirt key={index} shirt={shirt} onBuy={handleBuy} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const Shirt = ({shirt, onBuy}) => {
+    const [quantity, setQuantity] = useState(1);
+    const {title, image, price, stock} = shirt;
+
+    return (
+        <div className="col-md-4 mb-4">
+            <div className="card h-100 shadow-sm">
+                <img src={`images/${image}`} className="card-img-top" alt={title} />
+
+                <div className="card-body text-center">
+                    <h5 className="card-title">{title}</h5>
+                    <p className="card-text text-muted">${price.toFixed(2)}</p>
+                    
+                    <p className={`fw-bold ${stock === 0 ? 'text-danger' : 'text-success'}`}>{stock > 0 ? `Stock: ${stock}` : 'Out of Stock'}</p>
+
+                    {stock > 0 ? (
+                        <div className="buy-section">
+                            <select
+                                className="form-select mb-2"
+                                value={quantity}
+                                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                            >
+                                {[...Array(stock).keys()].map((n) => (
+                                    <option key={n + 1} value={n + 1}>{n + 1}</option>
+                                ))}
+                            </select>
+
+                            <button 
+                                className="btn btn-primary w-100"
+                                onClick={() => { onBuy(title, quantity); setQuantity(1); }}
+                            >
+                                Buy
+                            </button>
+                        </div>
+                    ) : null}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default App;
