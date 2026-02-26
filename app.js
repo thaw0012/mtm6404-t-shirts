@@ -1,5 +1,5 @@
-//Manages the state of Inventory
-const App = () => {
+//Manages the state of Inventory 
+const App = () => { 
     const [inventory, setInventory] = React.useState(tshirts);
 
     //This part finds the specific shirt and reduces its stock
